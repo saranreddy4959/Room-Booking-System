@@ -1,14 +1,41 @@
 import { Injectable } from '@angular/core';
 import { Room, LayoutCapacity, Layout } from './model/Room';
 import { User } from './model/User';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataServiceService {
 
-  rooms: Array<Room>
-  users: Array<User>;
+  private rooms: Array<Room>
+  private users: Array<User>;
+
+  getRooms() : Observable<Array<Room>>{
+    return of(this.rooms);
+  }
+
+  getUsers() : Observable<Array<User>>{
+    return of(this.users);
+  }
+
+  updateUser(user: User) : Observable<User>{
+    const originalUser = this.users.find( u => u.id === user.id);
+    originalUser.name = user.name;
+    return of(originalUser);
+  }
+
+  addUser(newUser:User,password:String): Observable<User>{
+    let id = 0;
+    for(const user of this.users){
+      if(user.id> id){
+          id= user.id;
+      }
+    }
+    newUser.id = id + 1;
+    this.users.push(newUser);
+    return of(newUser)
+  }
   constructor() { 
     this.rooms=new Array<Room>();
     const room1 = new Room();
@@ -50,7 +77,7 @@ export class DataServiceService {
 
     this.users= new Array<User>();
     const user1 = new User();
-    user1.id=13;
+    user1.id=1;
     user1.name ="Mat";
     this.users.push(user1);
   }

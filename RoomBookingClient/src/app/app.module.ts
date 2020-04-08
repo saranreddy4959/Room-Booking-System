@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
@@ -8,6 +9,8 @@ import { RoomsComponent } from './admin/rooms/rooms.component';
 import { UsersComponent } from './admin/users/users.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RoomDetailComponent } from './admin/rooms/room-detail/room-detail.component';
+import { UserDetailComponent } from './admin/users/user-detail/user-detail.component';
+import { UserEditComponent } from './admin/users/user-edit/user-edit.component';
 
 
 const routes:Routes = [
@@ -26,10 +29,13 @@ const routes:Routes = [
     RoomsComponent,
     UsersComponent,
     PageNotFoundComponent,
-    RoomDetailComponent
+    RoomDetailComponent,
+    UserDetailComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     RouterModule.forRoot(routes)
   ],
   providers: [],

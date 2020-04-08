@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/User';
 import { DataServiceService } from 'src/app/data-service.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -10,11 +11,35 @@ import { DataServiceService } from 'src/app/data-service.service';
 export class UsersComponent implements OnInit {
 
   users: Array<User>;
-  constructor(private dataService: DataServiceService) { 
-    this.users = this.dataService.users;
+
+  selectedUser: User;
+  action : string;
+  constructor(private dataService: DataServiceService, private router:Router, private route: ActivatedRoute) { 
+    
   }
 
-  ngOnInit(): void {
+  ngOnInit(){
+    this.dataService.getUsers().subscribe(
+      (next) =>{
+        this.users = next;
+      }
+    );
+    this.route.queryParams.subscribe(
+      (params) => {
+        const id = params['id'];
+        this.action = params['action'];
+        this.selectedUser=this.users.find(user => user.id === +id);
+      }
+    )
+  }
+
+  selectUser(id:number){
+    this.router.navigate(['admin','users'], {queryParams : {id, action : 'view'}});
+  }
+
+  addUser(){
+    this.selectedUser = new User();
+    this.router.navigate(['admin','users'], {queryParams : { action : 'add'}});
   }
 
 }
