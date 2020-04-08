@@ -68,7 +68,7 @@ checkIfPasswordsArdValid(){
   }else{
   this.passwordsMatch = this.password === this.password2;
   if(this.password ){
-  this.passwordsAreValid = this.password.trim.length>0;
+  this.passwordsAreValid = this.password.trim().length>0;
   }
   else{
     this.passwordsAreValid = false;
