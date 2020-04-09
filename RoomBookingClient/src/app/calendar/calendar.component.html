@@ -1,6 +1,6 @@
 <h1>Room Booking System</h1>
 
-<h2>The following meetings are taking place on: <input type="date"/></h2>
+<h2>The following meetings are taking place on: <input type="date" [(ngModel)]="selectedDate" name ="selectedDate" (change)="dateChanged()"/></h2>
 
 <a class="btn btn-primary mt-3 mb-5" (click)="addBooking()">New Booking</a>
 
