@@ -1,4 +1,4 @@
-package com.virtualpairprogrammers.roombooking.model.entities;
+package com.saran.roombooking.model.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

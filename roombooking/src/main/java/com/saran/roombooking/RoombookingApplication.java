@@ -1,4 +1,4 @@
-package com.virtualpairprogrammers.roombooking;
+package com.saran.roombooking;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

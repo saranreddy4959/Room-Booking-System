@@ -1,9 +1,10 @@
-package com.virtualpairprogrammers.roombooking.model;
+package com.saran.roombooking.model;
 
-import com.virtualpairprogrammers.roombooking.model.entities.Booking;
-import com.virtualpairprogrammers.roombooking.model.entities.Room;
-import com.virtualpairprogrammers.roombooking.model.entities.User;
 import java.sql.Date;
+
+import com.saran.roombooking.model.entities.Booking;
+import com.saran.roombooking.model.entities.Room;
+import com.saran.roombooking.model.entities.User;
 
 public class BookingCommand {
 

@@ -1,13 +1,14 @@
-package com.virtualpairprogrammers.roombooking.services;
+	package com.saran.roombooking.services;
 
-import com.virtualpairprogrammers.roombooking.data.BookingRepository;
-import com.virtualpairprogrammers.roombooking.data.RoomRepository;
-import com.virtualpairprogrammers.roombooking.data.UserRepository;
-import com.virtualpairprogrammers.roombooking.model.*;
-import com.virtualpairprogrammers.roombooking.model.entities.Booking;
-import com.virtualpairprogrammers.roombooking.model.entities.LayoutCapacity;
-import com.virtualpairprogrammers.roombooking.model.entities.Room;
-import com.virtualpairprogrammers.roombooking.model.entities.User;
+import com.saran.roombooking.data.BookingRepository;
+import com.saran.roombooking.data.RoomRepository;
+import com.saran.roombooking.data.UserRepository;
+import com.saran.roombooking.model.*;
+import com.saran.roombooking.model.entities.Booking;
+import com.saran.roombooking.model.entities.LayoutCapacity;
+import com.saran.roombooking.model.entities.Room;
+import com.saran.roombooking.model.entities.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

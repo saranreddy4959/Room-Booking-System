@@ -1,7 +1,8 @@
-package com.virtualpairprogrammers.roombooking.data;
+package com.saran.roombooking.data;
 
-import com.virtualpairprogrammers.roombooking.model.entities.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.saran.roombooking.model.entities.Booking;
 
 import java.sql.Date;
 import java.util.List;

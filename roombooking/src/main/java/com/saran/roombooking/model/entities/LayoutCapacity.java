@@ -1,11 +1,11 @@
-package com.virtualpairprogrammers.roombooking.model.entities;
-
-import com.virtualpairprogrammers.roombooking.model.Layout;
+package com.saran.roombooking.model.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.saran.roombooking.model.Layout;
 
 @Entity
 public class LayoutCapacity {

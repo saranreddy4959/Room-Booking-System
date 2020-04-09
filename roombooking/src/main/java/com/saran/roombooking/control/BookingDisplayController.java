@@ -1,7 +1,8 @@
-package com.virtualpairprogrammers.roombooking.control;
+package com.saran.roombooking.control;
 
-import com.virtualpairprogrammers.roombooking.data.BookingRepository;
-import com.virtualpairprogrammers.roombooking.model.DateRequestCommand;
+import com.saran.roombooking.data.BookingRepository;
+import com.saran.roombooking.model.DateRequestCommand;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

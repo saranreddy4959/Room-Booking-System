@@ -1,8 +1,9 @@
-package com.virtualpairprogrammers.roombooking.model.entities;
-
-import com.virtualpairprogrammers.roombooking.model.Layout;
+package com.saran.roombooking.model.entities;
 
 import javax.persistence.*;
+
+import com.saran.roombooking.model.Layout;
+
 import java.sql.Date;
 import java.sql.Time;
 

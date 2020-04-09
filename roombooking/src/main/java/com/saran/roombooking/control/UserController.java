@@ -1,7 +1,8 @@
-package com.virtualpairprogrammers.roombooking.control;
+package com.saran.roombooking.control;
 
-import com.virtualpairprogrammers.roombooking.data.UserRepository;
-import com.virtualpairprogrammers.roombooking.model.entities.User;
+import com.saran.roombooking.data.UserRepository;
+import com.saran.roombooking.model.entities.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

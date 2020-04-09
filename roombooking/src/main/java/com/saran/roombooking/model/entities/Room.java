@@ -1,7 +1,7 @@
-package com.virtualpairprogrammers.roombooking.model.entities;
+package com.saran.roombooking.model.entities;
 
-import com.virtualpairprogrammers.roombooking.model.Layout;
-import com.virtualpairprogrammers.roombooking.model.entities.LayoutCapacity;
+import com.saran.roombooking.model.Layout;
+import com.saran.roombooking.model.entities.LayoutCapacity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
