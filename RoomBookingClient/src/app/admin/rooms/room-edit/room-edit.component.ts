@@ -1,13 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Room, Layout, LayoutCapacity } from 'src/app/model/Room';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { DataServiceService } from 'src/app/data-service.service';
+import { Router } from '@angular/router';
+import { FormResetServiceService } from 'src/app/form-reset-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-room-edit',
   templateUrl: './room-edit.component.html',
   styleUrls: ['./room-edit.component.css']
 })
-export class RoomEditComponent implements OnInit {
+export class RoomEditComponent implements OnInit, OnDestroy {
 
   @Input()
   room: Room;
@@ -15,22 +19,46 @@ export class RoomEditComponent implements OnInit {
   layouts = Object.keys(Layout);
   layoutEnum = Layout;
 
-  roomForm = new FormGroup({
-    roomName : new FormControl('roomName'),
-    location : new FormControl('location')
-  });
+  roomForm : FormGroup;
+
+  resetEventSubscription : Subscription;
 
   
-  constructor() { }
+  constructor(private formBuilder: FormBuilder,
+              private dataService: DataServiceService,
+              private router: Router,
+              private formResetService: FormResetServiceService) { }
 
   ngOnInit(): void {
-    this.roomForm.patchValue({
-      roomName : this.room.name,
-      location : this.room.location
-    });
+      this.initializedForm();
+      this.resetEventSubscription = this.formResetService.resetRoomFormEvent.subscribe(
+        room => {
+          this.room = room;
+          this.initializedForm();
+        }
+      )
+  }
+
+  ngOnDestroy(){
+    this.resetEventSubscription.unsubscribe();
+  }
+
+  initializedForm() {
+
+    this.roomForm = this.formBuilder.group(
+      { 
+    roomName : [this.room.name, Validators.required],
+    location : [this.room.location, [Validators.required, Validators.minLength(2)]]}
+    );
+    // this.roomForm.patchValue({
+    //   roomName : this.room.name,
+    //   location : this.room.location
+    // });
 
     for(const layout of this.layouts){
-      this.roomForm.addControl(`layout${layout}`, new FormControl(`layout${layout}`));
+      const layoutCapacity = this.room.capacities.find(lc => lc.layout === Layout[layout]);
+      const initialCapacity = layoutCapacity == null ? 0 : layoutCapacity.capacity;
+      this.roomForm.addControl(`layout${layout}`, this.formBuilder.control(initialCapacity));
     }
 
   }
@@ -46,8 +74,21 @@ export class RoomEditComponent implements OnInit {
       layoutCapacity.capacity = this.roomForm.controls[`layout${layout}`].value;
       this.room.capacities.push(layoutCapacity);
     }
-    console.log(this.room);
+    
     //call a method in data service to save the room
+    if(this.room.id == null){
+      this.dataService.addRoom(this.room).subscribe(
+          next => {
+              this.router.navigate(['admin','rooms'], {queryParams : {action : 'view', id : next.id}});
+          }
+      );
+    } else{
+      this.dataService.updateRoom(this.room).subscribe(
+        next => {
+          this.router.navigate(['admin','rooms'], {queryParams : {action : 'view', id : next.id}});
+      }
+      );
+    }
   }
 
 }

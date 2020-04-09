@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Room } from 'src/app/model/Room';
 import { Router } from '@angular/router';
+import { DataServiceService } from 'src/app/data-service.service';
 
 @Component({
   selector: 'app-room-detail',
@@ -13,7 +14,8 @@ export class RoomDetailComponent implements OnInit {
   room : Room;
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private dataService : DataServiceService) { }
 
   ngOnInit(): void {
     
@@ -21,6 +23,12 @@ export class RoomDetailComponent implements OnInit {
 
   editRoom(){
     this.router.navigate(['admin','rooms'], {queryParams : { action: 'edit', id: this.room.id}});
+  }
+
+  deleteRoom(){
+      this.dataService.deleteRoom(this.room.id).subscribe(
+        next => this.router.navigate(['admin', 'rooms'])
+      );
   }
 
 }

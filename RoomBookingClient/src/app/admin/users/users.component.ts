@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/User';
 import { DataServiceService } from 'src/app/data-service.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormResetServiceService } from 'src/app/form-reset-service.service';
 
 @Component({
   selector: 'app-users',
@@ -14,7 +15,8 @@ export class UsersComponent implements OnInit {
 
   selectedUser: User;
   action : string;
-  constructor(private dataService: DataServiceService, private router:Router, private route: ActivatedRoute) { 
+  constructor(private dataService: DataServiceService, private router:Router, private route: ActivatedRoute, 
+              private formResetService:FormResetServiceService) { 
     
   }
 
@@ -42,6 +44,7 @@ export class UsersComponent implements OnInit {
   addUser(){
     this.selectedUser = new User();
     this.router.navigate(['admin','users'], {queryParams : { action : 'add'}});
+    this.formResetService.resetUserFormEvent.emit(this.selectedUser);
   }
 
 }

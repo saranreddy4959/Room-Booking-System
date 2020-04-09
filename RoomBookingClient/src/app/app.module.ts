@@ -12,12 +12,15 @@ import { RoomDetailComponent } from './admin/rooms/room-detail/room-detail.compo
 import { UserDetailComponent } from './admin/users/user-detail/user-detail.component';
 import { UserEditComponent } from './admin/users/user-edit/user-edit.component';
 import { RoomEditComponent } from './admin/rooms/room-edit/room-edit.component';
+import { EditBookingComponent } from './calendar/edit-booking/edit-booking.component';
 
 
 const routes:Routes = [
   {path: 'admin/users', component : UsersComponent},
   {path:'admin/rooms', component: RoomsComponent},
   {path:'', component:CalendarComponent},
+  {path: 'editBooking', component: EditBookingComponent},
+  {path: 'addBooking', component: EditBookingComponent},
   {path:'404', component:PageNotFoundComponent},
   {path:'**', redirectTo : '/404'}
 ];
@@ -33,7 +36,8 @@ const routes:Routes = [
     RoomDetailComponent,
     UserDetailComponent,
     UserEditComponent,
-    RoomEditComponent
+    RoomEditComponent,
+    EditBookingComponent
   ],
   imports: [
     BrowserModule,

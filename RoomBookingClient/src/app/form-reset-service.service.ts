@@ -1,0 +1,13 @@
+import { Injectable, EventEmitter } from '@angular/core';
+import { Room } from './model/Room';
+import { User } from './model/User';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FormResetServiceService {
+
+  resetRoomFormEvent = new EventEmitter<Room>();
+  resetUserFormEvent = new EventEmitter<User>();
+  constructor() { }
+}
