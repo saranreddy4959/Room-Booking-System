@@ -15,6 +15,8 @@ export class UsersComponent implements OnInit {
 
   selectedUser: User;
   action : string;
+  message = 'Loading data...please wait';
+  loadingData = true;
   constructor(private dataService: DataServiceService, private router:Router, private route: ActivatedRoute, 
               private formResetService:FormResetServiceService) { 
     
@@ -24,17 +26,21 @@ export class UsersComponent implements OnInit {
     this.dataService.getUsers().subscribe(
       (next) =>{
         this.users = next;
+        this.loadingData = false;
+        this.route.queryParams.subscribe(
+          (params) => {
+            const id = params['id'];
+            this.action = params['action'];
+            if(id){
+            this.selectedUser=this.users.find(user => user.id === +id);
+            }
+          }
+        )
+      }, error =>{
+        this.message = 'An error occured - please contact support ';
       }
     );
-    this.route.queryParams.subscribe(
-      (params) => {
-        const id = params['id'];
-        this.action = params['action'];
-        if(id){
-        this.selectedUser=this.users.find(user => user.id === +id);
-        }
-      }
-    )
+      
   }
 
   selectUser(id:number){

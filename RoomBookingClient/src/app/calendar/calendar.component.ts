@@ -25,16 +25,6 @@ export class CalendarComponent implements OnInit {
   
   ngOnInit(): void {
 
-
-    this.dataService.getUser(13)
-      .subscribe(
-      (next : User) => {
-        console.log(next.name);
-        console.log(typeof next);
-        console.log(next.getRole());
-      }
-    )
-
     this.route.queryParams.subscribe(
       params => {
         this.selectedDate = params['date'];

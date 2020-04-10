@@ -3,6 +3,8 @@ package com.saran.roombooking.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,13 +28,17 @@ public class RestRoomsController {
 	private RoomRepository roomRepository;
 	
 	@GetMapping
-	public List<Room> getAllRooms(){
+	public List<Room> getAllRooms(HttpServletResponse response) throws InterruptedException{
+		Thread.sleep(3000);
 		return roomRepository.findAll();
+		
+//		response.setStatus(402);
+//		return null;
 	}
 	
 	@GetMapping("/{id}")
 	public Room getRoom(@PathVariable("id") Long id) {
-		
+			
 		return roomRepository.findById(id).get();
 	}
 	

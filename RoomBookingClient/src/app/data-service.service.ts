@@ -43,7 +43,7 @@ export class DataServiceService {
   }
 
   updateUser(user: User) : Observable<User>{
-    return of(null);
+    return this.http.put<User>(environment.restUrl+'/api/users', user);
   }
 
   addUser(newUser:User,password:String): Observable<User>{
@@ -102,12 +102,5 @@ export class DataServiceService {
 
   }
 
-  getUser(id: number) : Observable<User>{
-    return this.http.get<User>(environment.restUrl+ '/api/users/' + id)
-    .pipe(
-      map(data => {
-        return User.fromHttp(data);
-      })
-    );
-  }
+  
 }
