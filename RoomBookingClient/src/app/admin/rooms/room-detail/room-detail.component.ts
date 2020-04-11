@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Room } from 'src/app/model/Room';
 import { Router } from '@angular/router';
 import { DataServiceService } from 'src/app/data-service.service';
+
 
 @Component({
   selector: 'app-room-detail',
@@ -13,6 +14,10 @@ export class RoomDetailComponent implements OnInit {
   @Input()
   room : Room;
 
+  @Output()
+  dataChangedEvent = new EventEmitter();
+
+  message = "";
 
   constructor(private router: Router,
               private dataService : DataServiceService) { }
@@ -26,9 +31,21 @@ export class RoomDetailComponent implements OnInit {
   }
 
   deleteRoom(){
+
+      const result = confirm('Are you sure you wish to  delete this room');
+      if(result){
+      this.message = 'deleting...';
       this.dataService.deleteRoom(this.room.id).subscribe(
-        next => this.router.navigate(['admin', 'rooms'])
-      );
+        next => {
+          this.dataChangedEvent.emit();
+          this.router.navigate(['admin', 'rooms']);
+        },
+      error => {
+        this.message = 'Sorry - this room cannot be deleted at this time.';
+      }
+      )
+  
+    }
   }
 
 }

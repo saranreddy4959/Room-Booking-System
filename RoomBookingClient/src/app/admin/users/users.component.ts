@@ -23,6 +23,11 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.loadData();
+      
+  }
+
+  loadData(){
     this.dataService.getUsers().subscribe(
       (next) =>{
         this.users = next;
@@ -40,7 +45,6 @@ export class UsersComponent implements OnInit {
         this.message = 'An error occured - please contact support ';
       }
     );
-      
   }
 
   selectUser(id:number){

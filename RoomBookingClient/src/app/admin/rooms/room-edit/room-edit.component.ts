@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Room, Layout, LayoutCapacity } from 'src/app/model/Room';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DataServiceService } from 'src/app/data-service.service';
@@ -15,6 +15,11 @@ export class RoomEditComponent implements OnInit, OnDestroy {
 
   @Input()
   room: Room;
+
+  @Output()
+  dataChangedEvent = new EventEmitter();
+
+  message = '';
 
   layouts = Object.keys(Layout);
   layoutEnum = Layout;
@@ -64,6 +69,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(){
+    this.message = 'Saving ...'
     this.room.name = this.roomForm.controls['roomName'].value;
     this.room.location = this.roomForm.value['location'];
 
@@ -79,14 +85,18 @@ export class RoomEditComponent implements OnInit, OnDestroy {
     if(this.room.id == null){
       this.dataService.addRoom(this.room).subscribe(
           next => {
-              this.router.navigate(['admin','rooms'], {queryParams : {action : 'view', id : next.id}});
-          }
+            this.dataChangedEvent.emit();
+            this.router.navigate(['admin','rooms'], {queryParams : {action : 'view', id : next.id}});
+          },
+          error => this.message = "Something went wrong, you may wish to try again "
       );
     } else{
       this.dataService.updateRoom(this.room).subscribe(
         next => {
+          this.dataChangedEvent.emit();
           this.router.navigate(['admin','rooms'], {queryParams : {action : 'view', id : next.id}});
-      }
+      },
+      error => this.message = "Something went wrong, you may wish to try again "
       );
     }
   }

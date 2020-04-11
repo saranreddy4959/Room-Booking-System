@@ -8,6 +8,7 @@ import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -47,33 +48,61 @@ export class DataServiceService {
   }
 
   addUser(newUser:User,password:String): Observable<User>{
-    return of(null);
+    const fullUser = {id: newUser.id, name : newUser.name, password: password};
+    return this.http.post<User>(environment.restUrl + '/api/users', fullUser);
+  }
+
+  private getCorrectedRoom(room : Room){
+    const correctedRoom = {id : room.id, name : room.name, location : room.location, capacities : []}
+    for ( const lc of room.capacities){
+
+      let correctLayout;
+      for(let member in Layout){
+        if(Layout[member] === lc.layout){
+          correctLayout = member;
+        }
+      }
+
+      const correctedLayout = {layout : correctLayout, capacity : lc.capacity}
+      correctedRoom.capacities.push(correctedLayout);
+    }
+    return correctedRoom;
   }
 
   updateRoom(room : Room) : Observable<Room>{
-    return of(null);
+    
+    return this.http.put<Room>(environment.restUrl + '/api/rooms', this.getCorrectedRoom(room));
   }
 
   addRoom(newRoom : Room) : Observable<Room>{
-    return of(null);
+    return this.http.post<Room>(environment.restUrl + '/api/rooms', this.getCorrectedRoom(newRoom));
   }
 
   deleteRoom(id: number) : Observable<any> {
-    return of(null);
+    return this.http.delete(environment.restUrl + '/api/rooms/delete/' + id);
 
   }
 
   deleteUser(id: number) : Observable<any>{
     
-    return of(null);
+    return this.http.delete(environment.restUrl + '/api/users/'+id);
   }
 
   resetUserPassword(id : number) : Observable<any>{
-      return of(null);
+    return this.http.get(environment.restUrl + '/api/users/resetPassword/'+id);
   }
 
   getBookings(date : string) :  Observable<Array<Booking>>{
-    return of(null);
+    return this.http.get<Array<Booking>>(environment.restUrl+'/api/bookings/' +date)
+      .pipe(
+        map(data => {
+          const bookings = new Array<Booking>();
+          for(const booking of data){
+            bookings.push(Booking.fromHttp(booking));
+          }
+          return bookings;
+        })
+      );
   }
 
   getBooking(id : number): Observable<Booking>{
@@ -92,7 +121,7 @@ export class DataServiceService {
   }
 
   deleteBooking(id : number){
-    return of(null);
+    return this.http.delete(environment.restUrl+'/api/bookings/' +id)
   }
 
 
