@@ -106,7 +106,10 @@ export class DataServiceService {
   }
 
   getBooking(id : number): Observable<Booking>{
-    return of(null);
+    return this.http.get<Booking>(environment.restUrl+'/api/bookings?id='+id)
+    .pipe(
+      map(data =>  Booking.fromHttp(data))
+    )
 
   }
 

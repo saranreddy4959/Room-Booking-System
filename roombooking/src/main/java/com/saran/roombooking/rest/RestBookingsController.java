@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.saran.roombooking.data.BookingRepository;
@@ -30,6 +31,11 @@ public class RestBookingsController {
 	@DeleteMapping("/{id}")
 	public void deleteBooking(@PathVariable("id") Long id) {
 		bookingRepository.deleteById(id);
+	}
+	
+	@GetMapping()
+	public Booking getBooking(@RequestParam("id") Long id) {
+		return bookingRepository.findById(id).get();
 	}
 
 }
