@@ -116,6 +116,9 @@ export class DataServiceService {
     this.bookings.splice(this.bookings.indexOf(booking), 1);
     return of(null);
   }
+  validateUser(name: string, password:string): Observable<string>{
+      return of("ok");
+  }
 
 
   constructor() { 

@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,5 +40,18 @@ public class RestBookingsController {
 	public Booking getBooking(@RequestParam("id") Long id) {
 		return bookingRepository.findById(id).get();
 	}
+	
+	@PostMapping()
+	public Booking newBooking(@RequestBody Booking booking) {
+	    bookingRepository.save(booking);
+	    return booking;
+	}
+
+	@PutMapping()
+	public Booking updateBooking(@RequestBody Booking updatedBooking) {
+	    bookingRepository.save(updatedBooking);
+	    return updatedBooking;
+	}
+
 
 }
