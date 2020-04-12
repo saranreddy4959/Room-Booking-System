@@ -10,12 +10,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-public class BasicAuthConfig extends WebSecurityConfigurerAdapter {
+public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication()
-		.withUser("matt").password("{noop}secret").authorities("ROLE_ADMIN");
+		.withUser("matt").password("{noop}secret").authorities("ROLE_ADMIN")
+		.and()
+		.withUser("jane").password("{noop}secret").authorities("ROLE_USER");
 		
 		
 	}
@@ -23,9 +25,23 @@ public class BasicAuthConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http
+		.csrf().disable()
+		.authorizeRequests()
 		.antMatchers(HttpMethod.OPTIONS,"/api/basicAuth/**").permitAll()
-		.antMatchers("/api/basicAuth/**").hasRole("ADMIN")
+		.antMatchers("/api/basicAuth/**").hasAnyRole("ADMIN","USER")
 		.and().httpBasic();
+		
+		http
+			.csrf().disable()
+			.authorizeRequests()
+			.antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+			.antMatchers(HttpMethod.GET, "/api/bookings/**").permitAll()
+			.antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority("ADMIN", "USER")
+			.antMatchers("/api/**").hasRole("ADMIN")
+			.and()
+			.addFilter(new JWTAuthorizationFilter(authenticationManager()));
 	}
+	
+	
 }
