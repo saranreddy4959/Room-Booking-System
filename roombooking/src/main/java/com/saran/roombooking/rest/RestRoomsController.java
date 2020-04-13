@@ -20,7 +20,7 @@ import com.saran.roombooking.data.RoomRepository;
 import com.saran.roombooking.model.entities.Room;
 
 
-
+@CrossOrigin(origins = "http://localhost:4200")	
 @RestController
 @RequestMapping("/api/rooms")
 public class RestRoomsController {
@@ -29,9 +29,8 @@ public class RestRoomsController {
 	@Autowired
 	private RoomRepository roomRepository;
 	
-	@GetMapping
+	@GetMapping()
 	public List<Room> getAllRooms(HttpServletResponse response) throws InterruptedException{
-		Thread.sleep(3000);
 		return roomRepository.findAll();
 		
 //		response.setStatus(402);

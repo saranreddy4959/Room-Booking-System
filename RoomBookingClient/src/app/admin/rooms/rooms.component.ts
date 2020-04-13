@@ -3,6 +3,7 @@ import { DataServiceService } from 'src/app/data-service.service';
 import { Room } from 'src/app/model/Room';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormResetServiceService } from 'src/app/form-reset-service.service';
+import { AuthService } from 'src/app/auth.service';
 
 
 @Component({
@@ -22,11 +23,12 @@ export class RoomsComponent implements OnInit {
   constructor(private dataService: DataServiceService,
               private route: ActivatedRoute,
               private router: Router,
-              private formResetService : FormResetServiceService) { }
+              private formResetService : FormResetServiceService,
+              private authService: AuthService) { }
 
 
   loadData(){
-    this.dataService.getRooms().subscribe(
+    this.dataService.getRooms(this.authService.jwtToken).subscribe(
 
       (next) => {
         this.rooms = next;

@@ -66,6 +66,11 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 				List<GrantedAuthority> roles = new ArrayList<>();
 				GrantedAuthority grantedAuthority = new GrantedAuthority() {
 					
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public String getAuthority() {
 						// TODO Auto-generated method stub

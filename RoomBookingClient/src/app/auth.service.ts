@@ -9,6 +9,7 @@ export class AuthService {
 
   isAuthenticated = false;
   authenticationResultEvent = new EventEmitter<boolean>();
+  jwtToken : string;
 
 
   constructor(private dataService: DataServiceService) { }
@@ -18,6 +19,7 @@ export class AuthService {
     this.dataService.validateUser(name,password).subscribe(
       next => {
         //valid data
+        this.jwtToken = next.result;
         this.isAuthenticated = true;
         this.authenticationResultEvent.emit(true);
       },

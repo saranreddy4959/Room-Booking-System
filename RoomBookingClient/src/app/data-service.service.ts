@@ -4,7 +4,6 @@ import { map } from 'rxjs/operators';
 import { User } from './model/User';
 import { Observable, of } from 'rxjs';
 import { Booking } from './model/Booking';
-import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -15,9 +14,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class DataServiceService {
 
 
-  getRooms() : Observable<Array<Room>>{
-    
-    return this.http.get<Array<Room>>(environment.restUrl+ '/api/rooms')
+  getRooms(token : string) : Observable<Array<Room>>{
+    // const headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
+    const headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
+    return this.http.get<Array<Room>>(environment.restUrl+ '/api/rooms', {headers})
     .pipe(
       map(data => {
         const rooms = new Array<Room>();
@@ -151,10 +151,10 @@ export class DataServiceService {
     return this.http.delete(environment.restUrl+'/api/bookings/' +id)
   }
 
-  validateUser(name: string, password:string): Observable<string>{
+  validateUser(name: string, password:string): Observable<{result: string}>{
       const authData = btoa(`${name}:${password}`);
       const headers = new HttpHeaders().append('Authorization', 'Basic ' + authData );
-      return this.http.get<string>(environment.restUrl + '/api/basicAuth/validate', {headers: headers});
+      return this.http.get<{result:string}>(environment.restUrl + '/api/basicAuth/validate', {headers: headers});
   }
 
   constructor(private http : HttpClient) { 
