@@ -5,6 +5,7 @@ import { DataServiceService } from 'src/app/data-service.service';
 import { Router } from '@angular/router';
 import { FormResetServiceService } from 'src/app/form-reset-service.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-room-edit',
@@ -32,7 +33,8 @@ export class RoomEditComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private dataService: DataServiceService,
               private router: Router,
-              private formResetService: FormResetServiceService) { }
+              private formResetService: FormResetServiceService,
+              private authService: AuthService) { }
 
   ngOnInit(): void {
       this.initializedForm();
@@ -96,7 +98,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
           this.dataChangedEvent.emit();
           this.router.navigate(['admin','rooms'], {queryParams : {action : 'view', id : next.id}});
       },
-      error => this.message = "Something went wrong, you may wish to try again "
+      error => this.message = "Something went wrong, you may wish to try again " + error.status
       );
     }
   }

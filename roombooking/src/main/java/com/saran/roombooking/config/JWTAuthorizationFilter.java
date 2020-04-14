@@ -1,6 +1,7 @@
 package com.saran.roombooking.config;
 
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Map;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,11 +39,27 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	
 		@Override
 		public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-			String header = request.getHeader("Authorization");
-			if(header == null || !header.startsWith("Bearer")) {
+			
+			Cookie[] cookies = request.getCookies();
+			if(cookies == null || cookies.length == 0) {
 				chain.doFilter(request, response);
 				return;
 			}
+			
+			Cookie tokenCookie = null;
+			for(Cookie cookie: cookies) {
+				if(cookie.getName().equals("token")) {
+					tokenCookie = cookie;
+				}
+			}
+			
+			if(tokenCookie == null) {
+			//if(header == null || !header.startsWith("Bearer")) {
+				chain.doFilter(request, response);
+				return;
+			}
+			
+			
 			
 			if(jwtService == null) {
 			ServletContext servletContext = request.getServletContext();
@@ -49,13 +67,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 			jwtService = wac.getBean(JWTService.class);
 			}
 			
-			UsernamePasswordAuthenticationToken authentication = getAuthentication(header);
+			UsernamePasswordAuthenticationToken authentication = getAuthentication(tokenCookie.getValue());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			chain.doFilter(request, response);
 	}
 		
-		private UsernamePasswordAuthenticationToken getAuthentication(String header) {
-			String jwtToken = header.substring(7);
+		private UsernamePasswordAuthenticationToken getAuthentication(String jwtToken) {
+			//String jwtToken = header.substring(7);
 			try {
 				String payload = jwtService.validateToken(jwtToken);
 				JsonParser parser = JsonParserFactory.getJsonParser();
@@ -66,10 +84,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 				List<GrantedAuthority> roles = new ArrayList<>();
 				GrantedAuthority grantedAuthority = new GrantedAuthority() {
 					
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
 
 					@Override
 					public String getAuthority() {

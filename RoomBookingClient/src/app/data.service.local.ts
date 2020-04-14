@@ -119,7 +119,13 @@ export class DataServiceService {
   validateUser(name: string, password:string): Observable<{result:string}>{
       return of({result:'ok'});
   }
+  getRole():Observable<{role:string}>{
+    return of({role :'ADMIN'})
+  }
 
+  logout(): Observable<string>{
+    return of('');
+  }
 
   constructor() { 
 

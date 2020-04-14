@@ -2,7 +2,7 @@
 
 <h2>The following meetings are taking place on: <input type="date" [(ngModel)]="selectedDate" name ="selectedDate" (change)="dateChanged()"/></h2>
 
-<a class="btn btn-primary mt-3 mb-5" (click)="addBooking()">New Booking</a>
+<a class="btn btn-primary mt-3 mb-5" (click)="addBooking()" *ngIf="isAdminUser">New Booking</a>
 <div *ngIf="message">{{message}}</div>
 <div *ngIf="dataLoaded">
 <!-- only show this h3 if there are no bookings! -->
@@ -27,8 +27,8 @@
         <p>Participants: {{booking.participants}}</p>
       </div>
       <div class="col-6">
-        <a class="btn btn-warning" (click) = "editBooking(booking.id)">Amend</a>
-        <a class="btn btn-danger" (click)="deleteBooking(booking.id)">Cancel</a>
+        <a class="btn btn-warning" (click) = "editBooking(booking.id)" *ngIf="isAdminUser">Amend</a>
+        <a class="btn btn-danger" (click)="deleteBooking(booking.id)" *ngIf="isAdminUser">Cancel</a>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@ import { Room } from 'src/app/model/Room';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormResetServiceService } from 'src/app/form-reset-service.service';
 import { AuthService } from 'src/app/auth.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -19,16 +20,17 @@ export class RoomsComponent implements OnInit {
   loadingData = true;
   message = "Please wait......... getting the list of rooms";
   reloadAttempts = 0;
+  isAdminUser = false;
 
   constructor(private dataService: DataServiceService,
               private route: ActivatedRoute,
               private router: Router,
               private formResetService : FormResetServiceService,
-              private authService: AuthService) { }
+              private authService:AuthService) { }
 
 
   loadData(){
-    this.dataService.getRooms(this.authService.jwtToken).subscribe(
+    this.dataService.getRooms().subscribe(
 
       (next) => {
         this.rooms = next;
@@ -72,12 +74,24 @@ export class RoomsComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-      this.loadData();
+  ngOnInit() {
 
-
-    
-  }
+    this.loadData();
+      console.log(this.authService.role);
+      if(this.authService.role === 'ADMIN'){
+        this.isAdminUser = true;
+      }
+      this.authService.roleSetEvent.subscribe(
+        next => {
+          if(next === 'ADMIN'){
+            this.isAdminUser = true;
+          }
+          else{
+            this.isAdminUser = false;
+          }
+        }
+      );
+    }
 
   setRoom(id : number){
     this.router.navigate(['admin','rooms'], {queryParams: {id, action : 'view'}});

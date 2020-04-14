@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,8 @@ public class RestRoomsController {
 	
 	@GetMapping()
 	public List<Room> getAllRooms(HttpServletResponse response) throws InterruptedException{
+		
+		//System.out.println("token received by cookie: "+token);
 		return roomRepository.findAll();
 		
 //		response.setStatus(402);

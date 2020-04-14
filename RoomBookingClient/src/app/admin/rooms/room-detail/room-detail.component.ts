@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Room } from 'src/app/model/Room';
 import { Router } from '@angular/router';
 import { DataServiceService } from 'src/app/data-service.service';
+import { AuthService } from 'src/app/auth.service';
 
 
 @Component({
@@ -19,11 +20,27 @@ export class RoomDetailComponent implements OnInit {
 
   message = "";
 
+  isAdminUser = false;
+
   constructor(private router: Router,
-              private dataService : DataServiceService) { }
+              private dataService : DataServiceService,
+              private authService : AuthService) { }
 
   ngOnInit(): void {
-    
+    console.log(this.authService.role);
+    if(this.authService.role === 'ADMIN'){
+      this.isAdminUser = true;
+    }
+    this.authService.roleSetEvent.subscribe(
+      next => {
+        if(next === 'ADMIN'){
+          this.isAdminUser = true;
+        }
+        else{
+          this.isAdminUser = false;
+        }
+      }
+    );
   }
 
   editRoom(){

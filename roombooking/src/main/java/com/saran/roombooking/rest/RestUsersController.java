@@ -1,9 +1,17 @@
 package com.saran.roombooking.rest;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,4 +69,31 @@ public class RestUsersController {
 		userRepository.save(user);
 		
 	}
+	
+	@GetMapping("/currentUserRole")
+	public Map<String,String> getCurrentUsersRole() {
+		Collection<GrantedAuthority> roles = (Collection<GrantedAuthority>)SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		String role = "";
+		if (roles.size() > 0) {
+			GrantedAuthority ga = roles.iterator().next();
+			role = ga.getAuthority().substring(5);
+		}
+		Map<String,String> results = new HashMap<>();
+		results.put("role", role);
+		//System.out.println("role is " + role);
+		return results;
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpServletResponse response) {
+		Cookie cookie = new Cookie("token", null);
+		cookie.setPath("/api");
+		cookie.setHttpOnly(true);
+		//TODO: When in production must do cookie.setSecure(true);
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
+		SecurityContextHolder.getContext().setAuthentication(null);
+		return "";
+	}
+	
 }
