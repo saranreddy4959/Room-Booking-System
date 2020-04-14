@@ -1,4 +1,4 @@
-package com.virtualpairprogrammers.roombooking;
+package com.saran.roombooking;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
