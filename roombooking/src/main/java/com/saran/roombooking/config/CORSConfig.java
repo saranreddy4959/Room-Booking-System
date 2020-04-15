@@ -16,7 +16,7 @@ public class CORSConfig implements WebMvcConfigurer {
 		.allowedOrigins("http://localhost:4200")
 		.allowCredentials(true);
 		
-		// Need to change the URL for the production URL when we deploy
+		// It is necessary to change the URL for the production URL when we deploy
 	}
 
 }
